@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Партнёры</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #F4E8D3; }
+        .container { max-width: 700px; margin: 32px auto; background: #fff; border-radius: 8px; border: 1px solid #bbb; }
+        .partner-card { display: flex; justify-content: space-between; align-items: flex-start; border: 1px solid #aaa; border-radius: 6px; padding: 18px 20px; margin: 16px 10px; background: #fff; }
+        .partner-title { font-weight: bold; margin-bottom: 5px; }
+        .partner-discount { font-size: 22px; font-weight: bold; color: #67BA80; margin-left: 30px;}
+        .partner-meta { color: #444; font-size: 15px; margin-top: 2px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Логотип" style="height: 48px;">
+        <h1>Партнёры</h1>
+        {% for p in partners %}
+        <div class="partner-card">
+            <div>
+                <div class="partner-title">
+                    {{ p.partner_type }} | {{ p.name }}
+                </div>
+                <div class="partner-meta">
+                    {{ p.director }}<br>
+                    {{ p.phone }}<br>
+                    Рейтинг: {{ p.rating }}
+                </div>
+            </div>
+            <div class="partner-discount">
+                {{ p.discount }}%
+            </div>
+            <a href="{{ url_for('partner_history', partner_id=p.id) }}" style="font-size:14px; margin-left:16px;">История реализации</a>
+            <a class="accent-btn" href="{{ url_for('add_sale', partner_id=p.id) }}">Добавить продажу</a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>История продаж — {{ partner.name }}</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #F4E8D3; }
+        .container { max-width: 700px; margin: 32px auto; background: #fff; border-radius: 8px; border: 1px solid #bbb; padding: 24px 20px;}
+        table { width: 100%; border-collapse: collapse; margin-top: 20px;}
+        th, td { border-bottom: 1px solid #ddd; padding: 8px 12px; }
+        th { background: #F4E8D3; }
+        .back-btn { display: inline-block; margin: 12px 0; background: #67BA80; color: #fff; padding: 8px 18px; border-radius: 5px; text-decoration: none; }
+        .back-btn:hover { background: #519e67; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>История реализации для {{ partner.partner_type }} {{ partner.name }}</h2>
+        <p><b>Директор:</b> {{ partner.director }}<br>
+        <b>Телефон:</b> {{ partner.phone }}</p>
+
+        <table>
+            <tr>
+                <th>Дата продажи</th>
+                <th>Продукт</th>
+                <th>Количество</th>
+                <th>Действия</th>
+            </tr>
+            {% for s in sales %}
+            <tr>
+                <td>{{ s.sale_date }}</td>
+                <td>{{ s.product_name }}</td>
+                <td>{{ s.quantity }}</td>
+                <td>
+                <a href="{{ url_for('edit_sale', partner_id=partner.id, sale_id=s.id) }}">Редактировать</a>
+                <form action="{{ url_for('delete_sale', partner_id=partner.id, sale_id=s.id) }}" method="post" style="display:inline;">
+                    <button type="submit" onclick="return confirm('Удалить продажу?')">Удалить</button>
+                </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a class="back-btn" href="{{ url_for('partners') }}">Назад к списку партнёров</a>
+    </div>
+</body>
+</html>

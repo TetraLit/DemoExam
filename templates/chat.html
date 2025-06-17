@@ -1,0 +1,42 @@
+<!-- Удаляем файл полностью-->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Домашняя страница</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px;}
+        #response { margin-top: 20px; font-size: 6px }
+        input, button { font-size: 6px; padding: 5px; }
+    </style>
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById("userMessage");
+            const responseDiv = document.getElementById("response");
+
+            // очистить старый ответ
+            responseDiv.innerText = "Ожидание ответа...";
+
+            const res = await fetch("/ask", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: input.value })
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                responseDiv.innerText = data.reply;
+            } else {
+                const data = await res.json();
+                responseDiv.innerText = "Ошибка: " + data.reply;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Редактирование данных</h1>
+    <input type="text" id="userMessage" placeholder="ЗАО" style="width: 400px;">
+    <button onclick="sendMessage()">Изменить</button>
+    <div id="response"></div>
+</body>
+</html>
